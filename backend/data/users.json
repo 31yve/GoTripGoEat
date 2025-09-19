@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "username": "Ye",
+    "email": "alfarrezald@gmail.com",
+    "password": "davin123",
+    "full_name": "Administrator",
+    "role": "admin"
+  },
+  {
+    "id": 2,
+    "username": "Budi",
+    "email": "budi@gmail.com",
+    "password": "budi123",
+    "full_name": "Budi Penjual",
+    "role": "teacher",
+    "school": "ww",
+    "phone": "ww"
+  },
+  {
+    "id": 3,
+    "username": "Siti",
+    "email": "siti@gmail.com",
+    "password": "siti123",
+    "full_name": "Siti Murid",
+    "role": "student"
+  },
+  {
+    "id": 4,
+    "username": "testuser",
+    "email": "testuser@example.com",
+    "password": "test123",
+    "full_name": "Test User",
+    "role": "student",
+    "phone": "08123456789"
+  },
+  {
+    "id": 5,
+    "username": "syabilganteng",
+    "full_name": "syabilganteng",
+    "email": "syabilganteng@gmail.com",
+    "password": "1234567",
+    "role": "student",
+    "phone": "085126080236"
+  }
+]
