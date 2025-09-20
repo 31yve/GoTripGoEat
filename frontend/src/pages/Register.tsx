@@ -13,6 +13,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [formData, setFormData] = useState({
+    username: '',
     email: '',
     phone: '',
     password: '',
@@ -22,7 +23,7 @@ const Register = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
+    if (!formData.username || !formData.email || !formData.phone || !formData.password || !formData.confirmPassword) {
       showToast({ type: 'error', title: 'Error', description: 'Harap isi semua field' });
       return;
     }
@@ -42,6 +43,7 @@ const Register = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
+          username: formData.username,
           email: formData.email,
           phone: formData.phone,
           password: formData.password
@@ -65,13 +67,8 @@ const Register = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 to-primary/5 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <Button
-          variant="ghost"
-          onClick={() => navigate('/login')}
-          className="mb-4 self-start"
-        >
-          <ArrowLeft className="w-4 h-4 mr-2" />
-          Kembali
+        <Button variant="ghost" onClick={() => navigate('/login')} className="mb-4 self-start">
+          <ArrowLeft className="w-4 h-4 mr-2"/>Kembali
         </Button>
 
         <div className="flex justify-center items-center space-x-2 mb-6">
@@ -81,15 +78,10 @@ const Register = () => {
           <span className="text-2xl font-bold text-primary">GoTripGoEat</span>
         </div>
 
-        <h2 className="text-center text-3xl font-extrabold text-foreground">
-          Buat Akun Baru
-        </h2>
+        <h2 className="text-center text-3xl font-extrabold text-foreground">Buat Akun Baru</h2>
         <p className="mt-2 text-center text-sm text-muted-foreground">
           Sudah punya akun?{' '}
-          <button
-            onClick={() => navigate('/login')}
-            className="font-medium text-primary hover:text-primary/80 transition-colors"
-          >
+          <button onClick={() => navigate('/login')} className="font-medium text-primary hover:text-primary/80 transition-colors">
             masuk di sini
           </button>
         </p>
@@ -99,13 +91,26 @@ const Register = () => {
         <Card className="py-8 px-4 shadow-xl sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleRegister}>
             <div>
+              <Label htmlFor="username">Username</Label>
+              <Input
+                id="username"
+                name="username"
+                type="text"
+                required
+                placeholder="Username unik"
+                value={formData.username}
+                onChange={(e) => setFormData({...formData, username: e.target.value})}
+              />
+            </div>
+
+            <div>
               <Label htmlFor="email">Email</Label>
               <Input
                 id="email"
                 name="email"
                 type="email"
                 required
-                placeholder="nama@sekolah.edu"
+                placeholder="nama@domain.com"
                 value={formData.email}
                 onChange={(e) => setFormData({...formData, email: e.target.value})}
               />
@@ -136,11 +141,8 @@ const Register = () => {
                   value={formData.password}
                   onChange={(e) => setFormData({...formData, password: e.target.value})}
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowPassword(!showPassword)}
-                >
+                <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowPassword(!showPassword)}>
                   {showPassword ? <EyeOff className="h-4 w-4 text-muted-foreground"/> : <Eye className="h-4 w-4 text-muted-foreground"/>}
                 </button>
               </div>
@@ -158,28 +160,17 @@ const Register = () => {
                   value={formData.confirmPassword}
                   onChange={(e) => setFormData({...formData, confirmPassword: e.target.value})}
                 />
-                <button
-                  type="button"
-                  className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                >
+                <button type="button" className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}>
                   {showConfirmPassword ? <EyeOff className="h-4 w-4 text-muted-foreground"/> : <Eye className="h-4 w-4 text-muted-foreground"/>}
                 </button>
               </div>
             </div>
 
             <div>
-              <Button type="submit" className="w-full btn-ripple" size="lg">
-                Daftar
-              </Button>
+              <Button type="submit" className="w-full btn-ripple" size="lg">Daftar</Button>
             </div>
           </form>
-
-          <div className="mt-6 text-center text-sm text-muted-foreground">
-            Dengan mendaftar, Anda menyetujui{' '}
-            <a href="#" className="font-medium text-primary hover:text-primary/80">Syarat & Ketentuan</a> dan{' '}
-            <a href="#" className="font-medium text-primary hover:text-primary/80">Kebijakan Privasi</a>
-          </div>
         </Card>
       </div>
     </div>

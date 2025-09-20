@@ -1,13 +1,5 @@
 [
   {
-    "id": 1,
-    "username": "Ye",
-    "email": "alfarrezald@gmail.com",
-    "password": "davin123",
-    "full_name": "Administrator",
-    "role": "admin"
-  },
-  {
     "id": 2,
     "username": "Budi",
     "email": "budi@gmail.com",
@@ -23,7 +15,7 @@
     "email": "siti@gmail.com",
     "password": "siti123",
     "full_name": "Siti Murid",
-    "role": "student"
+    "role": "penjual"
   },
   {
     "id": 4,
@@ -42,5 +34,41 @@
     "password": "1234567",
     "role": "student",
     "phone": "085126080236"
+  },
+  {
+    "id": 6,
+    "username": "davin1245",
+    "full_name": "davin1245",
+    "email": "davin1245@smp.belajar.id",
+    "password": "123456",
+    "role": "student",
+    "phone": "081262525283"
+  },
+  {
+    "id": 7,
+    "username": "ridhoarrayan01",
+    "full_name": "ridhoarrayan01",
+    "email": "ridhoarrayan01@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "phone": "081262525283"
+  },
+  {
+    "id": 8,
+    "username": "lengal",
+    "full_name": "lengal",
+    "email": "lengal@gmail.com",
+    "password": "123456",
+    "role": "student",
+    "phone": "081262525283"
+  },
+  {
+    "id": 9,
+    "username": "alfarrezald",
+    "full_name": "alfarrezald",
+    "email": "alfarrezald@gmail.com",
+    "password": "Davinreset123",
+    "role": "admin",
+    "phone": "081262525283"
   }
 ]

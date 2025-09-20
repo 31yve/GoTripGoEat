@@ -12,13 +12,13 @@ const Login = () => {
   const { showToast } = useToastProvider();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: '',
+    username: '', // bisa username atau email
     password: ''
   });
 
-  // Login handler - cek ke backend
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!formData.username || !formData.password) {
       showToast({
         type: 'error',
@@ -33,28 +33,22 @@ const Login = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          username: formData.username,
+          identifier: formData.username, // <-- HARUS identifier sesuai backend
           password: formData.password
         })
       });
 
       const data = await res.json();
+
       if (res.ok && data.user) {
-        if (data.token) {
-          localStorage.setItem('token', data.token);
-        }
+        if (data.token) localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        // pakai lowercase supaya konsisten
         const role = (data.user.role || '').toLowerCase();
 
-        if (role === 'admin') {
-          navigate('/dashboard/admin');
-        } else if (role === 'seller') {
-          navigate('/dashboard/seller');
-        } else {
-          navigate('/dashboard/student');
-        }
+        if (role === 'admin') navigate('/dashboard/admin');
+        else if (role === 'seller') navigate('/dashboard/seller');
+        else navigate('/dashboard/student');
 
         showToast({
           type: 'success',
@@ -65,10 +59,11 @@ const Login = () => {
         showToast({
           type: 'error',
           title: 'Login gagal',
-          description: data.message || 'Username atau password salah'
+          description: data.message || 'Username/email atau password salah'
         });
       }
     } catch (err) {
+      console.error(err);
       showToast({
         type: 'error',
         title: 'Error',
@@ -120,8 +115,7 @@ const Login = () => {
                 name="username"
                 type="text"
                 required
-                className="mt-1"
-                placeholder="contoh: Ye"
+                placeholder="Username atau Email"
                 value={formData.username}
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
@@ -157,17 +151,6 @@ const Login = () => {
               </div>
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="text-sm">
-                <a
-                  href="#"
-                  className="font-medium text-primary hover:text-primary/80"
-                >
-                  Lupa password?
-                </a>
-              </div>
-            </div>
-
             <div>
               <Button type="submit" className="w-full btn-ripple" size="lg">
                 Masuk
@@ -175,16 +158,14 @@ const Login = () => {
             </div>
           </form>
 
-          <div className="mt-6">
-            <div className="text-center text-sm text-muted-foreground">
-              Belum punya akun?{' '}
-              <button
-                onClick={() => navigate('/register')}
-                className="font-medium text-primary hover:text-primary/80"
-              >
-                Daftar sekarang
-              </button>
-            </div>
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            Belum punya akun?{' '}
+            <button
+              onClick={() => navigate('/register')}
+              className="font-medium text-primary hover:text-primary/80"
+            >
+              Daftar sekarang
+            </button>
           </div>
         </Card>
       </div>
