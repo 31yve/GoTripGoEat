@@ -1,26 +1,32 @@
-import { Navigate } from "react-router-dom";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-interface ProtectedRouteProps {
-  children: React.ReactNode;
-  role?: string;
-}
+const ProtectedRoute = ({ allowedRoles, children }) => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const token = localStorage.getItem('token');
+  const user = JSON.parse(localStorage.getItem('user') || '{}');
+  const userRole = (user.role || '').toLowerCase().trim();
 
-const ProtectedRoute = ({ children, role }: ProtectedRouteProps) => {
-  const token = localStorage.getItem("token");
-  const user = localStorage.getItem("user")
-    ? JSON.parse(localStorage.getItem("user")!)
-    : null;
+  useEffect(() => {
+    if (!token) {
+      navigate('/login');
+      return;
+    }
 
-  if (!token || !user) {
-    return <Navigate to="/login" replace />;
+    if (allowedRoles && !allowedRoles.includes(userRole)) {
+      navigate('/login');
+      return;
+    }
+
+    setLoading(false);
+  }, [token, userRole, allowedRoles, navigate]);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  // cek role konsisten lowercase
-  if (role && user.role.toLowerCase() !== role.toLowerCase()) {
-    return <Navigate to="/" replace />;
-  }
-
-  return <>{children}</>;
+  return children;
 };
 
 export default ProtectedRoute;

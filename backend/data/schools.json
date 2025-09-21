@@ -1,0 +1,22 @@
+[
+  {
+    "id": 1758449131017,
+    "name": "SMK Negeri 13 Bandung",
+    "address": "Jl. Soekarno-Hatta No.KM. 10, Jatisari, Kec. Buahbatu, Kota Bandung, Jawa Barat 40286",
+    "contact": "",
+    "students": 1120,
+    "canteens": 6,
+    "createdAt": "2025-09-21T10:05:31.017Z",
+    "updatedAt": "2025-09-21T10:05:31.017Z"
+  },
+  {
+    "id": 1,
+    "name": "SMK Negeri 1 Bandung",
+    "address": "Jl. Gesit No. 1, Kesatuan, Kec. Bandung Kidul, Bandung",
+    "contact": "021-2345678",
+    "students": 1200,
+    "canteens": 5,
+    "createdAt": "2024-01-15T10:30:00Z",
+    "updatedAt": "2024-09-01T08:00:00Z"
+  }
+]

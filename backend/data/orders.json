@@ -1,1 +1,27 @@
-[]
+[
+  {
+    "id": "ORD-001",
+    "customer": "Budi Santoso",
+    "customerEmail": "budi.santoso@email.com",
+    "seller": "Ibu Sari - Kantin Utama SMK 1 Bandung",
+    "sellerId": 1,
+    "school": "SMK Negeri 1 Bandung",
+    "items": [
+      {
+        "name": "Nasi Goreng Spesial",
+        "quantity": 1,
+        "price": 15000
+      },
+      {
+        "name": "Es Teh Manis",
+        "quantity": 1,
+        "price": 5000
+      }
+    ],
+    "total": 20000,
+    "status": "completed",
+    "date": "2024-09-15T10:30:00Z",
+    "paymentMethod": "qris",
+    "deliveryTime": "2024-09-15T11:00:00Z"
+  }
+]

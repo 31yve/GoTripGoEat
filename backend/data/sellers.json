@@ -1,0 +1,41 @@
+[
+  {
+    "id": 1,
+    "name": "Ibu Sari",
+    "canteen": "Kantin Utama SMK 1 Bandung",
+    "school": "SMK Negeri 1 Bandung",
+    "phone": "081345678901",
+    "email": "kantin.smk1bdg@email.com",
+    "status": "active",
+    "totalSales": 15000000,
+    "totalOrders": 450,
+    "createdAt": "2024-01-05T09:15:00Z",
+    "updatedAt": "2024-09-15T14:30:00Z"
+  },
+  {
+    "id": 2,
+    "name": "Pak Budi",
+    "canteen": "Kantin Makanan Ringan SMK 1 Bandung",
+    "school": "SMK Negeri 1 Bandung",
+    "phone": "081345678902",
+    "email": "snack.smk1bdg@email.com",
+    "status": "active",
+    "totalSales": 8500000,
+    "totalOrders": 320,
+    "createdAt": "2024-01-08T13:45:00Z",
+    "updatedAt": "2024-09-12T11:20:00Z"
+  },
+  {
+    "id": 3,
+    "name": "Bu Rina",
+    "canteen": "Kantin Sehat SMK 2 Jakarta",
+    "school": "SMK Negeri 2 Jakarta",
+    "phone": "081345678903",
+    "email": "kantinsehat.jkt@email.com",
+    "status": "active",
+    "totalSales": 12000000,
+    "totalOrders": 380,
+    "createdAt": "2024-01-18T10:30:00Z",
+    "updatedAt": "2024-09-10T16:15:00Z"
+  }
+]

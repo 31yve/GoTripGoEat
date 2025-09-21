@@ -12,7 +12,7 @@ const Login = () => {
   const { showToast } = useToastProvider();
   const [showPassword, setShowPassword] = useState(false);
   const [formData, setFormData] = useState({
-    username: '', // bisa username atau email
+    username: '',
     password: ''
   });
 
@@ -29,45 +29,59 @@ const Login = () => {
     }
 
     try {
-      const res = await fetch('http://localhost:3001/auth/login', {
+      const res = await fetch('http://localhost:3002/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          identifier: formData.username, // <-- HARUS identifier sesuai backend
+          email: formData.username,
           password: formData.password
         })
       });
 
       const data = await res.json();
 
-      if (res.ok && data.user) {
+      if (res.ok && data.success) {
         if (data.token) localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
 
-        const role = (data.user.role || '').toLowerCase();
+        // Debug log untuk memastikan role
+        console.log('Login data:', { role: data.user.role, user: data.user });
 
-        if (role === 'admin') navigate('/dashboard/admin');
-        else if (role === 'seller') navigate('/dashboard/seller');
-        else navigate('/dashboard/student');
+        const role = (data.user.role || '').toLowerCase().trim();
+        if (role === 'admin') {
+          navigate('/dashboard/admin');
+        } else if (role === 'seller') {
+          navigate('/dashboard/seller');
+        } else if (role === 'student' || role === '') {
+          navigate('/dashboard/student');
+        } else {
+          showToast({
+            type: 'warning',
+            title: 'Role Tidak Dikenali',
+            description: `Role '${role}' tidak diketahui, diarahkan ke dashboard student.`
+          });
+          navigate('/dashboard/student');
+        }
 
         showToast({
           type: 'success',
           title: 'Login Berhasil',
-          description: `Selamat datang, ${data.user.full_name || role}!`
+          description: `Selamat datang, ${data.user.name || role}!`
         });
       } else {
         showToast({
           type: 'error',
           title: 'Login gagal',
-          description: data.message || 'Username/email atau password salah'
+          description: data.error || 'Email atau password salah'
         });
       }
     } catch (err) {
-      console.error(err);
+      const errorMsg = err.name === 'TypeError' ? 'Tidak dapat terhubung ke server' : 'Terjadi kesalahan';
+      console.error('Login error:', err);
       showToast({
         type: 'error',
         title: 'Error',
-        description: 'Tidak dapat terhubung ke server'
+        description: errorMsg
       });
     }
   };
@@ -109,13 +123,13 @@ const Login = () => {
         <Card className="py-8 px-4 shadow-xl sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleLogin}>
             <div>
-              <Label htmlFor="username">Username / Email</Label>
+              <Label htmlFor="username">Email</Label>
               <Input
                 id="username"
                 name="username"
-                type="text"
+                type="email"
                 required
-                placeholder="Username atau Email"
+                placeholder="Masukkan email"
                 value={formData.username}
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })

@@ -1,16 +1,55 @@
 {
   "files": [],
-  "references": [{ "path": "./tsconfig.app.json" }, { "path": "./tsconfig.node.json" }],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ],
   "compilerOptions": {
+    // Base configuration
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]
     },
-    "noImplicitAny": false,
-    "noUnusedParameters": false,
-    "skipLibCheck": true,
+    
+    // Strict mode (recommended - gradually enable)
+    "strict": false, // Keep false if you're migrating
+    "noImplicitAny": true,        // Enable untuk catch implicit any
+    "strictNullChecks": true,     // Enable untuk better null safety
+    "strictFunctionTypes": true,  // Enable untuk better function types
+    
+    // Compilation target
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    
+    // JSX
+    "jsx": "react-jsx",
     "allowJs": true,
-    "noUnusedLocals": false,
-    "strictNullChecks": false
+    
+    // Output
+    "noEmit": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    
+    // Linting (keep relaxed for now)
+    "noUnusedLocals": false,        // Keep false untuk development
+    "noUnusedParameters": false,    // Keep false untuk development
+    
+    // Import/Export
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
+    "preserveValueImports": true,
+    
+    // Source maps
+    "sourceMap": true,
+    
+    // Experimental
+    "useDefineForClassFields": true
+  },
+  "ts-node": {
+    "esm": true
   }
 }

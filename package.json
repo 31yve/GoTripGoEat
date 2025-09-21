@@ -1,16 +1,9 @@
 {
   "name": "gotripgoeat",
   "version": "1.0.0",
-  "private": true,
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "cd backend && node server.js",
+    "dev": "concurrently \"cd backend && npm run dev\" \"wait-on http://localhost:3002/api/health && cd frontend && npm run dev\"",
+    "server": "cd backend && npm run dev",
     "client": "cd frontend && npm run dev"
-  },
-  "devDependencies": {
-    "concurrently": "^9.2.1"
-  },
-  "dependencies": {
-    "bcryptjs": "^3.0.2"
   }
 }

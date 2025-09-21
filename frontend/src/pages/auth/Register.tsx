@@ -10,29 +10,22 @@ import { ArrowLeft } from "lucide-react";
 const Register = () => {
   const navigate = useNavigate();
   const { showToast } = useToastProvider();
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     username: "",
     email: "",
     password: "",
     full_name: "",
+    phone: "",
     role: "student", // default student
-    phone: "",       // tambahin biar konsisten dengan backend
   });
 
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
-
-    if (!formData.username || !formData.email || !formData.password) {
-      showToast({
-        type: "error",
-        title: "Error",
-        description: "Semua field wajib diisi",
-      });
-      return;
-    }
+    setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:3001/users/register", {
+      const res = await fetch("http://localhost:3002/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
@@ -41,14 +34,14 @@ const Register = () => {
       const data = await res.json();
 
       if (res.ok && data.user) {
-        // simpan user ke localStorage (opsional)
+        if (data.token) localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
 
-        // redirect sesuai role
-        const role = data.user.role;
+        const role = (data.user.role || "").toLowerCase();
+
         if (role === "admin") {
           navigate("/dashboard/admin");
-        } else if (role === "seller") {
+        } else if (role === "seller" || role === "penjual" || role === "teacher") {
           navigate("/dashboard/seller");
         } else {
           navigate("/dashboard/student");
@@ -63,22 +56,24 @@ const Register = () => {
         showToast({
           type: "error",
           title: "Registrasi gagal",
-          description: data.error || "Terjadi kesalahan saat registrasi",
+          description: data.message || "Terjadi kesalahan",
         });
       }
     } catch (err) {
+      console.error(err);
       showToast({
         type: "error",
         title: "Error",
         description: "Tidak dapat terhubung ke server",
       });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/10 to-primary/5 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        {/* Back Button */}
         <Button
           variant="ghost"
           onClick={() => navigate("/")}
@@ -88,26 +83,9 @@ const Register = () => {
           Kembali
         </Button>
 
-        {/* Logo */}
-        <div className="flex justify-center items-center space-x-2 mb-6">
-          <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center">
-            <span className="text-primary-foreground font-bold text-lg">GT</span>
-          </div>
-          <span className="text-2xl font-bold text-primary">GoTripGoEat</span>
-        </div>
-
         <h2 className="text-center text-3xl font-extrabold text-foreground">
-          Buat Akun Baru
+          Daftar Akun Baru
         </h2>
-        <p className="mt-2 text-center text-sm text-muted-foreground">
-          Sudah punya akun?{" "}
-          <button
-            onClick={() => navigate("/login")}
-            className="font-medium text-primary hover:text-primary/80 transition-colors"
-          >
-            masuk sekarang
-          </button>
-        </p>
       </div>
 
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
@@ -117,11 +95,9 @@ const Register = () => {
               <Label htmlFor="username">Username</Label>
               <Input
                 id="username"
-                name="username"
                 type="text"
                 required
-                className="mt-1"
-                placeholder="username123"
+                placeholder="Masukkan username"
                 value={formData.username}
                 onChange={(e) =>
                   setFormData({ ...formData, username: e.target.value })
@@ -130,29 +106,12 @@ const Register = () => {
             </div>
 
             <div>
-              <Label htmlFor="email">Email</Label>
-              <Input
-                id="email"
-                name="email"
-                type="email"
-                required
-                className="mt-1"
-                placeholder="nama@sekolah.edu"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({ ...formData, email: e.target.value })
-                }
-              />
-            </div>
-
-            <div>
               <Label htmlFor="full_name">Nama Lengkap</Label>
               <Input
                 id="full_name"
-                name="full_name"
                 type="text"
-                className="mt-1"
-                placeholder="Nama Lengkap"
+                required
+                placeholder="Nama lengkap"
                 value={formData.full_name}
                 onChange={(e) =>
                   setFormData({ ...formData, full_name: e.target.value })
@@ -161,13 +120,25 @@ const Register = () => {
             </div>
 
             <div>
-              <Label htmlFor="phone">Nomor Telepon</Label>
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                placeholder="Masukkan email"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+              />
+            </div>
+
+            <div>
+              <Label htmlFor="phone">Nomor HP</Label>
               <Input
                 id="phone"
-                name="phone"
-                type="tel"
-                className="mt-1"
-                placeholder="08xxxxxxxxxx"
+                type="text"
+                placeholder="08xxxxxxxx"
                 value={formData.phone}
                 onChange={(e) =>
                   setFormData({ ...formData, phone: e.target.value })
@@ -176,10 +147,24 @@ const Register = () => {
             </div>
 
             <div>
+              <Label htmlFor="role">Pilih Role</Label>
+              <select
+                id="role"
+                className="w-full border rounded-md px-3 py-2 mt-1"
+                value={formData.role}
+                onChange={(e) => setFormData({ ...formData, role: e.target.value })}
+              >
+                <option value="student">Siswa</option>
+                <option value="seller">Penjual</option>
+                <option value="teacher">Guru</option>
+                <option value="admin">Admin</option>
+              </select>
+            </div>
+
+            <div>
               <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
-                name="password"
                 type="password"
                 required
                 placeholder="Masukkan password"
@@ -191,28 +176,26 @@ const Register = () => {
             </div>
 
             <div>
-              <Label htmlFor="role">Role</Label>
-              <select
-                id="role"
-                name="role"
-                className="mt-1 w-full border rounded-md px-3 py-2"
-                value={formData.role}
-                onChange={(e) =>
-                  setFormData({ ...formData, role: e.target.value })
-                }
+              <Button
+                type="submit"
+                className="w-full btn-ripple"
+                size="lg"
+                disabled={loading}
               >
-                <option value="student">Student</option>
-                <option value="seller">Seller</option>
-                <option value="admin">Admin</option>
-              </select>
-            </div>
-
-            <div>
-              <Button type="submit" className="w-full btn-ripple" size="lg">
-                Daftar
+                {loading ? "Mendaftarkan..." : "Daftar"}
               </Button>
             </div>
           </form>
+
+          <div className="mt-6 text-center text-sm text-muted-foreground">
+            Sudah punya akun?{" "}
+            <button
+              onClick={() => navigate("/login")}
+              className="font-medium text-primary hover:text-primary/80"
+            >
+              Masuk
+            </button>
+          </div>
         </Card>
       </div>
     </div>
