@@ -8,7 +8,8 @@ import {
   Store, 
   TrendingUp, 
   Shield, 
-  Award 
+  Award,
+  HelpCircle
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -141,13 +142,8 @@ const Landing = () => {
               <AlertCircle className="w-16 h-16 text-muted-foreground mx-auto mb-4" />
               <h3 className="text-xl font-semibold mb-2">Belum Ada Sekolah Terdaftar</h3>
               <p className="text-muted-foreground mb-6">
-                Jadilah yang pertama! Daftarkan sekolah Anda sekarang.
+                Silakan hubungi tim support untuk mendaftarkan sekolah Anda.
               </p>
-              <Link to="/register">
-                <Button size="lg">
-                  Daftarkan Sekolah
-                </Button>
-              </Link>
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -194,16 +190,6 @@ const Landing = () => {
                   </div>
                 </Card>
               ))}
-            </div>
-          )}
-
-          {schools.length > 0 && (
-            <div className="text-center mt-12">
-              <Link to="/register">
-                <Button variant="outline" size="lg">
-                  Daftarkan Sekolah Anda
-                </Button>
-              </Link>
             </div>
           )}
         </div>
@@ -266,11 +252,12 @@ const Landing = () => {
                 Masuk Sekarang
               </Button>
             </Link>
-            <Link to="/register">
+            <a href="https://wa.me/6285126080236" target="_blank" rel="noopener noreferrer">
               <Button variant="outline" size="lg" className="w-full sm:w-auto">
-                Buat Akun Baru
+                <HelpCircle className="w-4 h-4 mr-2" />
+                Butuh Bantuan?
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
       </section>
